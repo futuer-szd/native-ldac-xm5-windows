@@ -1,0 +1,124 @@
+; SPDX-License-Identifier: Apache-2.0
+; Installable, staged-only Direct-PDO candidate for the tested Sony XM5 PDO.
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = Bluetooth
+ClassGuid   = {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+Provider    = %ProviderName%
+DriverVer   = 07/20/2026,0.1.1.0
+CatalogFile = NativeLdacDirectPdo.cat
+PnpLockDown = 1
+
+[DestinationDirs]
+NLDIRECTPDO.CopyList = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+NativeLdacDirectPdo.sys = 1,,
+
+[SignatureAttributes]
+NativeLdacDirectPdo.sys = SignatureAttributes.DRM
+
+[SignatureAttributes.DRM]
+DRMLevel = 1300
+
+[SignatureAttributes.PETrust]
+PETrust = true
+
+[Manufacturer]
+%ManufacturerName% = NLDIRECTPDO,NTamd64.10.0...22000
+
+[NLDIRECTPDO.NTamd64.10.0...22000]
+; Exact hardware match: Sony WH-1000XM5 A2DP Sink service PDO.
+%DeviceDescription% = NLDIRECTPDO,BTHENUM\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0002054C_PID&0DF0
+
+[NLDIRECTPDO.CopyList]
+NativeLdacDirectPdo.sys
+
+[NLDIRECTPDO.AddReg]
+HKR,,AssociatedFilters,0x00000000,"wdmaud,swmidi,redbook"
+HKR,,Driver,0x00000000,NativeLdacDirectPdo.sys
+HKR,PowerSettings,SingleComponentMultiFxStates,0x00010001,0x1
+HKR,PowerSettings,ConservationIdleTime,0x00010001,0x3
+HKR,PowerSettings,PerformanceIdleTime,0x00010001,0x3
+HKR,PowerSettings,IdlePowerState,0x00010001,0x3
+HKR,Drivers,SubClasses,0x00000000,"wave,midi,mixer"
+HKR,Drivers\wave\wdmaud.drv,Driver,0x00000000,wdmaud.drv
+HKR,Drivers\midi\wdmaud.drv,Driver,0x00000000,wdmaud.drv
+HKR,Drivers\mixer\wdmaud.drv,Driver,0x00000000,wdmaud.drv
+HKR,Drivers\wave\wdmaud.drv,Description,0x00000000,%DeviceDescription%
+HKR,Drivers\mixer\wdmaud.drv,Description,0x00000000,%DeviceDescription%
+
+[NLDIRECTPDO.I.WaveSpeaker]
+AddReg = NLDIRECTPDO.I.WaveSpeaker.AddReg
+
+[NLDIRECTPDO.I.WaveSpeaker.AddReg]
+HKR,,CLSID,0x00000000,%Proxy.CLSID%
+HKR,,FriendlyName,0x00000000,%WaveSpeakerName%
+
+[NLDIRECTPDO.I.TopologySpeaker]
+AddReg = NLDIRECTPDO.I.TopologySpeaker.AddReg
+
+[NLDIRECTPDO.I.TopologySpeaker.AddReg]
+HKR,,CLSID,0x00000000,%Proxy.CLSID%
+HKR,,FriendlyName,0x00000000,%TopologySpeakerName%
+HKR,EP\0,%PKEY_AudioEndpoint_Association%,0x00000000,%KSNODETYPE_ANY%
+HKR,EP\0,%PKEY_AudioEndpoint_Supports_EventDriven_Mode%,0x00010001,0x1
+
+[NLDIRECTPDO.NT]
+Include = ks.inf,wdmaudio.inf
+Needs = KS.Registration,WDMAUDIO.Registration
+CopyFiles = NLDIRECTPDO.CopyList
+AddReg = NLDIRECTPDO.AddReg
+
+[NLDIRECTPDO.NT.Interfaces]
+AddInterface = %KSCATEGORY_AUDIO%,%KSNAME_WaveSpeaker%,NLDIRECTPDO.I.WaveSpeaker
+AddInterface = %KSCATEGORY_RENDER%,%KSNAME_WaveSpeaker%,NLDIRECTPDO.I.WaveSpeaker
+AddInterface = %KSCATEGORY_REALTIME%,%KSNAME_WaveSpeaker%,NLDIRECTPDO.I.WaveSpeaker
+AddInterface = %KSCATEGORY_AUDIO%,%KSNAME_TopologySpeaker%,NLDIRECTPDO.I.TopologySpeaker
+AddInterface = %KSCATEGORY_TOPOLOGY%,%KSNAME_TopologySpeaker%,NLDIRECTPDO.I.TopologySpeaker
+
+[NLDIRECTPDO.NT.Services]
+AddService = NativeLdacDirectPdo,0x00000002,NativeLdacDirectPdo.Service
+
+[NativeLdacDirectPdo.Service]
+DisplayName = %ServiceDescription%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %13%\NativeLdacDirectPdo.sys
+
+[NLDIRECTPDO.NT.HW]
+AddReg = NLDIRECTPDO.HW.AddReg
+
+[NLDIRECTPDO.HW.AddReg]
+HKR,,DeviceType,0x00010001,0x0000001D
+HKR,,Security,0x00000000,"D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGWGX;;;LS)"
+
+[NLDIRECTPDO.NT.Wdf]
+KmdfService = NativeLdacDirectPdo,NLDIRECTPDO.Wdf
+
+[NLDIRECTPDO.Wdf]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+ProviderName = "Native LDAC contributors"
+ManufacturerName = "Native LDAC contributors"
+DiskName = "Native LDAC Direct-PDO staged test package"
+DeviceDescription = "Sony WH-1000XM5 Native LDAC Direct-PDO (candidate)"
+ServiceDescription = "Native LDAC Direct-PDO Audio Driver"
+KSNAME_WaveSpeaker = "WaveSpeaker"
+KSNAME_TopologySpeaker = "TopologySpeaker"
+WaveSpeakerName = "Native LDAC Direct-PDO WaveRT Render"
+TopologySpeakerName = "Native LDAC - WH-1000XM5"
+Proxy.CLSID = "{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSCATEGORY_AUDIO = "{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+KSCATEGORY_RENDER = "{65E8773E-8F56-11D0-A3B9-00A0C9223196}"
+KSCATEGORY_REALTIME = "{EB115FFC-10C8-4964-831D-6DCB02E6F23F}"
+KSCATEGORY_TOPOLOGY = "{DDA54A40-1E4C-11D1-A050-405705C10000}"
+KSNODETYPE_ANY = "{00000000-0000-0000-0000-000000000000}"
+PKEY_AudioEndpoint_Association = "{1DA5D803-D492-4EDD-8C23-E0C0FFEE7F0E},2"
+PKEY_AudioEndpoint_Supports_EventDriven_Mode = "{1DA5D803-D492-4EDD-8C23-E0C0FFEE7F0E},7"

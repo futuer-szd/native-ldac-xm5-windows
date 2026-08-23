@@ -1,0 +1,62 @@
+; SPDX-License-Identifier: Apache-2.0
+
+[Version]
+Signature = "$WINDOWS NT$"
+Class = Extension
+ClassGuid = {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+ExtensionId = {E949A4AF-0C79-4D5F-98D4-61A29D0CEB62}
+Provider = %ProviderName%
+DriverVer = 08/19/2026,0.2.0.0
+CatalogFile = NativeLdacAvrcpIoFilter.cat
+PnpLockDown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+NativeLdacAvrcpIoFilter.sys = 1,,
+
+[Manufacturer]
+%ManufacturerName% = Models,NTamd64.10.0...19041
+
+[Models.NTamd64.10.0...19041]
+; Exact XM5 AVRCP 0x110E PDO only. Microsoft remains the function driver.
+%DeviceDescription% = FilterInstall,BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0DF0
+
+[FilterInstall.NT]
+CopyFiles = DriverCopy
+
+[DriverCopy]
+NativeLdacAvrcpIoFilter.sys
+
+[FilterInstall.NT.Filters]
+AddFilter = NativeLdacAvrcpIoFilter,,FilterPosition
+
+[FilterPosition]
+FilterPosition = Upper
+
+[FilterInstall.NT.Services]
+AddService = NativeLdacAvrcpIoFilter,0x00000000,ServiceInstall
+
+[ServiceInstall]
+DisplayName = %ServiceDescription%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %13%\NativeLdacAvrcpIoFilter.sys
+
+[FilterInstall.NT.Wdf]
+KmdfService = NativeLdacAvrcpIoFilter,KmdfSection
+
+[KmdfSection]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+ProviderName = "Native LDAC contributors"
+ManufacturerName = "Native LDAC contributors"
+DiskName = "Native LDAC XM5 AVRCP I/O filter test package"
+DeviceDescription = "Sony WH-1000XM5 AVRCP I/O Observer Extension"
+ServiceDescription = "Native LDAC XM5 AVRCP Volume I/O Filter"

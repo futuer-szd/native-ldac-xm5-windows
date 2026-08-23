@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B06E85D9-7A53-4C79-84E8-E29D7D81F49C}</ProjectGuid>
+    <RootNamespace>NativeLdacDirectPdoCore</RootNamespace>
+    <KMDF_VERSION_MAJOR>1</KMDF_VERSION_MAJOR>
+    <SupportsPackaging>false</SupportsPackaging>
+    <RequiresPackageProject>false</RequiresPackageProject>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <DriverTargetPlatform>Windows Driver</DriverTargetPlatform>
+    <DriverType>KMDF</DriverType>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <DriverTargetPlatform>Windows Driver</DriverTargetPlatform>
+    <DriverType>KMDF</DriverType>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(ProjectDir)x64\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)x64\$(Configuration)\obj\</IntDir>
+    <TargetName>NativeLdacDirectPdoCore</TargetName>
+  </PropertyGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)..\protocol\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NATIVE_LDAC_KERNEL_MODE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\nativeldac_avdtp_transaction.c" />
+    <ClCompile Include="src\nativeldac_bth_indication_contract.c" />
+    <ClCompile Include="src\nativeldac_bth_transfer_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_arbiter.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_arbiter_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_control.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_control_abi.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_media_abi.c" />
+    <ClCompile Include="src\nativeldac_media_watchdog_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_diagnostic.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_diagnostic_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_dispatch_contract.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_dispatcher.c" />
+    <ClCompile Include="src\nativeldac_direct_pdo_preemption_contract.c" />
+    <ClCompile Include="src\nativeldac_bth_owner_contract.c" />
+    <ClCompile Include="src\nativeldac_bth_address_contract.c" />
+    <ClCompile Include="src\nativeldac_bth_signaling_contract.c" />
+    <ClCompile Include="src\nativeldac_bth_profile.c" />
+    <ClCompile Include="src\nativeldac_bth_request.c" />
+    <ClCompile Include="src\nativeldac_bth_signaling.c" />
+    <ClCompile Include="..\protocol\src\avdtp.c" />
+    <ClCompile Include="..\protocol\src\ldac_codec.c" />
+    <ClInclude Include="include\nativeldac_avdtp_transaction.h" />
+    <ClInclude Include="include\nativeldac_bth_indication_contract.h" />
+    <ClInclude Include="include\nativeldac_bth_transfer_contract.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_arbiter.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_arbiter_contract.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_control.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_control_abi.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_contract.h" />
+    <ClInclude Include="include\nativeldac_media_watchdog_contract.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_diagnostic.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_diagnostic_contract.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_dispatch_contract.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_dispatcher.h" />
+    <ClInclude Include="include\nativeldac_direct_pdo_preemption_contract.h" />
+    <ClInclude Include="include\nativeldac_bth_owner_contract.h" />
+    <ClInclude Include="include\nativeldac_bth_address_contract.h" />
+    <ClInclude Include="include\nativeldac_bth_signaling_contract.h" />
+    <ClInclude Include="include\nativeldac_bth_profile.h" />
+    <ClInclude Include="include\nativeldac_bth_request.h" />
+    <ClInclude Include="include\nativeldac_bth_signaling.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

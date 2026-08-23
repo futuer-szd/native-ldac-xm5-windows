@@ -1,0 +1,59 @@
+# Codex/local workspace metadata
+/.agents/
+/.vs/
+/tmp/
+
+# External reference checkouts and captured upstream trees
+/reference/
+
+# Generated packages, machine state, logs, driver backups, and test certificates
+/artifacts/
+
+# CMake/MSBuild/WDK output
+/build/
+**/x64/
+**/Debug/
+**/Release/
+**/CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+*.tlog/
+*.lastbuildstate
+*.recipe
+*.obj
+*.pdb
+*.ilk
+*.iobj
+*.ipdb
+*.exp
+*.lib
+*.exe
+*.dll
+*.sys
+*.cat
+
+# Certificates and private-key material
+*.cer
+*.pfx
+*.p12
+*.pvk
+*.pem
+*.key
+
+# Runtime diagnostics and local state
+*.log
+*.etl
+*.dmp
+*.tmp
+*.bak
+*.user
+*.suo
+*.VC.db
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Generated from the currently attached XM5 device container at build time
+/audio-endpoint/Source/Inc/nativeldac_remote_container.h

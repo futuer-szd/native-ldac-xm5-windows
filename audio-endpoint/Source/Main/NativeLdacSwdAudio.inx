@@ -1,0 +1,126 @@
+; SPDX-License-Identifier: Apache-2.0
+; Isolated, staged-only transport-owned endpoint candidate for Sony XM5.
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = MEDIA
+Provider    = %ProviderName%
+ClassGUID   = {4d36e96c-e325-11ce-bfc1-08002be10318}
+DriverVer   = 08/04/2026,0.3.0.0
+CatalogFile = NativeLdacSwdAudio.cat
+PnpLockDown = 1
+
+[SourceDisksNames]
+222=%DiskName%,"",222
+
+[SourceDisksFiles]
+NativeLdacSwdAudio.sys=222
+
+[SignatureAttributes]
+NativeLdacSwdAudio.sys=SignatureAttributes.DRM
+
+[SignatureAttributes.DRM]
+DRMLevel=1300
+
+[SignatureAttributes.PETrust]
+PETrust=true
+
+[Manufacturer]
+%MfgName%=NATIVELDACSWDAUDIO,NT$ARCH$.10.0...22000
+
+[NATIVELDACSWDAUDIO.NT$ARCH$.10.0...22000]
+%DeviceDesc%=NATIVELDACSWDAUDIO,SWD\NativeLdacAudioXm5
+
+[DestinationDirs]
+NATIVELDACSWDAUDIO.CopyList=13
+
+[NATIVELDACSWDAUDIO.CopyList]
+NativeLdacSwdAudio.sys
+
+[NATIVELDACSWDAUDIO.AddReg]
+HKR,,AssociatedFilters,,"wdmaud,swmidi,redbook"
+HKR,,Driver,,NativeLdacSwdAudio.sys
+HKR,PowerSettings,SingleComponentMultiFxStates,3,1,0,0,0
+HKR,PowerSettings,ConservationIdleTime,3,3,0,0,0
+HKR,PowerSettings,PerformanceIdleTime,3,3,0,0,0
+HKR,PowerSettings,IdlePowerState,3,3,0,0,0
+HKR,Drivers,SubClasses,,"wave,midi,mixer"
+HKR,Drivers\wave\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\midi\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\mixer\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\wave\wdmaud.drv,Description,,%DeviceDesc%
+HKR,Drivers\mixer\wdmaud.drv,Description,,%DeviceDesc%
+
+[NATIVELDACSWDAUDIO.I.WaveSpeaker]
+AddReg=NATIVELDACSWDAUDIO.I.WaveSpeaker.AddReg
+
+[NATIVELDACSWDAUDIO.I.WaveSpeaker.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WaveSpeakerName%
+
+[NATIVELDACSWDAUDIO.I.TopologySpeaker]
+AddReg=NATIVELDACSWDAUDIO.I.TopologySpeaker.AddReg
+
+[NATIVELDACSWDAUDIO.I.TopologySpeaker.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%TopologySpeakerName%
+HKR,EP\0,%PKEY_AudioEndpoint_Association%,,%KSNODETYPE_ANY%
+HKR,EP\0,%PKEY_AudioDevice_NeverSetAsDefaultEndpoint%,0x00010001,0x00000107
+HKR,EP\0,%PKEY_AudioEndpoint_Supports_EventDriven_Mode%,0x00010001,0x1
+
+[NATIVELDACSWDAUDIO.NT]
+Include=ks.inf,wdmaudio.inf
+Needs=KS.Registration,WDMAUDIO.Registration
+CopyFiles=NATIVELDACSWDAUDIO.CopyList
+AddReg=NATIVELDACSWDAUDIO.AddReg
+
+[NATIVELDACSWDAUDIO.NT.Interfaces]
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_WaveSpeaker%,NATIVELDACSWDAUDIO.I.WaveSpeaker
+AddInterface=%KSCATEGORY_RENDER%,%KSNAME_WaveSpeaker%,NATIVELDACSWDAUDIO.I.WaveSpeaker
+AddInterface=%KSCATEGORY_REALTIME%,%KSNAME_WaveSpeaker%,NATIVELDACSWDAUDIO.I.WaveSpeaker
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_TopologySpeaker%,NATIVELDACSWDAUDIO.I.TopologySpeaker
+AddInterface=%KSCATEGORY_TOPOLOGY%,%KSNAME_TopologySpeaker%,NATIVELDACSWDAUDIO.I.TopologySpeaker
+
+[NATIVELDACSWDAUDIO.NT.Services]
+AddService=NativeLdacSwdAudio,0x00000002,NativeLdacSwdAudio.Service
+
+[NativeLdacSwdAudio.Service]
+DisplayName=%ServiceDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%13%\NativeLdacSwdAudio.sys
+
+[NATIVELDACSWDAUDIO.NT.HW]
+AddReg=AUDIOHW.AddReg
+
+[AUDIOHW.AddReg]
+HKR,,DeviceType,0x10001,0x0000001D
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GRGWGX;;;BA)(A;;GRGWGX;;;LS)"
+
+[NATIVELDACSWDAUDIO.NT.Wdf]
+KmdfService=NativeLdacSwdAudio,NATIVELDACSWDAUDIO.Wdf
+
+[NATIVELDACSWDAUDIO.Wdf]
+KmdfLibraryVersion=$KMDFVERSION$
+
+[Strings]
+KSNAME_WaveSpeaker="WaveSpeaker"
+KSNAME_TopologySpeaker="TopologySpeaker"
+Proxy.CLSID="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSCATEGORY_AUDIO="{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+KSCATEGORY_RENDER="{65E8773E-8F56-11D0-A3B9-00A0C9223196}"
+KSCATEGORY_REALTIME="{EB115FFC-10C8-4964-831D-6DCB02E6F23F}"
+KSCATEGORY_TOPOLOGY="{DDA54A40-1E4C-11D1-A050-405705C10000}"
+KSNODETYPE_ANY="{00000000-0000-0000-0000-000000000000}"
+PKEY_AudioEndpoint_Association="{1DA5D803-D492-4EDD-8C23-E0C0FFEE7F0E},2"
+PKEY_AudioDevice_NeverSetAsDefaultEndpoint="{F3E80BEF-1723-4FF2-BCC4-7F83DC5E46D4},3"
+PKEY_AudioEndpoint_Supports_EventDriven_Mode="{1DA5D803-D492-4EDD-8C23-E0C0FFEE7F0E},7"
+
+ProviderName="Native LDAC contributors"
+MfgName="Native LDAC contributors"
+DiskName="Native LDAC transport-owned endpoint staged candidate"
+DeviceDesc="Native LDAC SWD - WH-1000XM5 (candidate)"
+ServiceDesc="Native LDAC Transport-Owned Audio Endpoint Driver"
+WaveSpeakerName="Native LDAC SWD WaveRT Render"
+TopologySpeakerName="Native LDAC SWD Speaker Topology"

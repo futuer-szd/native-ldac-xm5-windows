@@ -1,0 +1,28 @@
+/*++
+
+Copyright (c) Microsoft Corporation All Rights Reserved
+
+Module Name:
+
+    SimpleAudioSample.rc
+
+Abstract:
+
+--*/
+
+#include <windows.h>
+
+#include <ntverp.h>
+
+#define VER_FILETYPE                VFT_DRV
+#define VER_FILESUBTYPE             VFT2_DRV_SOUND
+#define VER_FILEDESCRIPTION_STR     "Native LDAC Virtual Audio Endpoint"
+#define VER_INTERNALNAME_STR        "NativeLdacAudio.sys"
+#define VER_ORIGINALFILENAME_STR    "NativeLdacAudio.sys"
+
+#define VER_LEGALCOPYRIGHT_YEARS    "2013"
+#define VER_LEGALCOPYRIGHT_STR	    "Derived from Microsoft Simple Audio Sample"
+
+#include "common.ver"
+
+

@@ -1,0 +1,55 @@
+; SPDX-License-Identifier: Apache-2.0
+
+[Version]
+Signature = "$WINDOWS NT$"
+Class = Bluetooth
+ClassGuid = {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+Provider = %ProviderName%
+DriverVer = 08/05/2026,0.1.0.0
+CatalogFile = NativeLdacAvrcpObserver.cat
+PnpLockDown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+NativeLdacAvrcpObserver.sys = 1,,
+
+[Manufacturer]
+%ManufacturerName% = Models,NTamd64.10.0...19041
+
+[Models.NTamd64.10.0...19041]
+; Deliberately limited to the single XM5 AVRCP 0x110E PDO under development.
+%DeviceDescription% = Install,BTHENUM\{0000110E-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0DF0
+
+[Install.NT]
+CopyFiles = DriverCopy
+
+[DriverCopy]
+NativeLdacAvrcpObserver.sys
+
+[Install.NT.Services]
+AddService = NativeLdacAvrcpObserver,0x00000002,ServiceInstall
+
+[ServiceInstall]
+DisplayName = %ServiceDescription%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %13%\NativeLdacAvrcpObserver.sys
+
+[Install.NT.Wdf]
+KmdfService = NativeLdacAvrcpObserver,KmdfSection
+
+[KmdfSection]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+ProviderName = "Native LDAC contributors"
+ManufacturerName = "Native LDAC contributors"
+DiskName = "Native LDAC AVRCP observer test package"
+DeviceDescription = "Sony WH-1000XM5 Native AVRCP Observer (experimental)"
+ServiceDescription = "Native LDAC AVRCP Observe-Only Sideband"
