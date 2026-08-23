@@ -15,3 +15,6 @@ Coding assistant collaborator. Contributed implementation work, test coverage, d
 This file credits collaboration roles without including private contact information.
 
 The public snapshot attribution was finalized on 2026-08-23.
+
+OpenAI Codex completed the final remote sanitization and archive review before
+the local development workspace was removed.
